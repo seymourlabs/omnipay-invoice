@@ -1,0 +1,35 @@
+{
+    "name": "seymourlabs/omnipay-invoice",
+    "type": "library",
+    "description": "Invoice driver for the Omnipay payment processing library",
+    "keywords": [
+        "invoice",
+        "gateway",
+        "merchant",
+        "omnipay",
+        "pay",
+        "payment"
+    ],
+    "homepage": "https://github.com/seymourlabs/omnipay-invoice",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Andrew Seymour",
+            "email": "git@seymourlabs.co.uk"
+        }
+    ],
+    "autoload": {
+        "psr-4": { "Omnipay\\Seymourlabs\\" : "src/" }
+    },
+    "require": {
+        "omnipay/common": "~2.0"
+    },
+    "require-dev": {
+        "omnipay/tests": "~2.0"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0.x-dev"
+        }
+    }
+}
