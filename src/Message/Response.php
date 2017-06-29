@@ -1,15 +1,15 @@
 <?php
 
-namespace Omnipay\Dummy\Message;
+namespace Seymourlabs\Omnipay\Invoice\Message;
 
 use Omnipay\Common\Message\AbstractResponse;
 
 /**
- * Dummy Response
+ * Invoice response
  *
- * This is the response class for all Dummy requests.
+ * This is the response class for all Invoice requests.
  *
- * @see \Omnipay\Dummy\Gateway
+ * @see \Seymourlabs\Omnipay\Invoice\Gateway
  */
 class Response extends AbstractResponse
 {

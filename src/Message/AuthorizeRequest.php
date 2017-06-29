@@ -1,41 +1,30 @@
 <?php
 
-namespace Omnipay\Dummy\Message;
+namespace Seymourlabs\Omnipay\Invoice\Message;
 
 use Omnipay\Common\Message\AbstractRequest;
 
 /**
- * Dummy Authorize Request
+ * Invoice Authorize Request
  *
  * ### Example
  *
  * <code>
- * // Create a gateway for the Dummy Gateway
+ * // Create a gateway for the Invoice Gateway
  * // (routes to GatewayFactory::create)
- * $gateway = Omnipay::create('Dummy');
+ * $gateway = Omnipay::create('Invoice');
  *
  * // Initialise the gateway
- * $gateway->initialize(array(
- *     'testMode' => true, // Doesn't really matter what you use here.
- * ));
- *
- * // Create a credit card object
- * // This card can be used for testing.
- * $card = new CreditCard(array(
- *             'firstName'    => 'Example',
- *             'lastName'     => 'Customer',
- *             'number'       => '4242424242424242',
- *             'expiryMonth'  => '01',
- *             'expiryYear'   => '2020',
- *             'cvv'          => '123',
- * ));
+ * $gateway->initialize([
+ *     'testMode' => true, // Test mode prepends "TEST:" into the invoice number
+ * ]);
  *
  * // Do an authorize transaction on the gateway
- * $transaction = $gateway->authorize(array(
+ * $transaction = $gateway->authorize([
  *     'amount'                   => '10.00',
  *     'currency'                 => 'AUD',
- *     'card'                     => $card,
- * ));
+ *     'prefix'                   => 'ABC' // optional
+ * ]);
  * $response = $transaction->send();
  * if ($response->isSuccessful()) {
  *     echo "Authorize transaction was successful!\n";
@@ -48,18 +37,19 @@ class AuthorizeRequest extends AbstractRequest
 {
     public function getData()
     {
-        $this->validate('amount', 'card');
-
-        $this->getCard()->validate();
-
+        $this->validate('amount');
         return array('amount' => $this->getAmount());
     }
 
     public function sendData($data)
     {
-        $data['reference'] = uniqid();
-        $data['success'] = 0 === substr($this->getCard()->getNumber(), -1, 1) % 2;
-        $data['message'] = $data['success'] ? 'Success' : 'Failure';
+        // generate reference
+        $data['reference'] = ($this->getTestMode() ? 'TEST:' : '') . (!empty($this->getParameter('prefix')) ? $this->getParameter('prefix') : '');
+        $data['reference'] .= date('Ymd', time()) . '-' . substr((string)microtime(), 2, 6) . date('His', time())  . '-' . str_pad(rand(0, 9999), 4, 0, STR_PAD_LEFT);
+
+        // always a success
+        $data['success'] = true;
+        $data['message'] = 'Success';
 
         return $this->response = new Response($this, $data);
     }
