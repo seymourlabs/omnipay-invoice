@@ -1,6 +1,6 @@
 <?php
 
-namespace Seymourlabs\Omnipay\Invoice\Message;
+namespace Omnipay\Invoice\Message;
 
 use Omnipay\Common\Message\AbstractResponse;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Seymourlabs\Omnipay\Invoice\Message;
+namespace Omnipay\Invoice\Message;
 
 use Omnipay\Common\Message\AbstractRequest;
 
@@ -23,8 +23,11 @@ use Omnipay\Common\Message\AbstractRequest;
  * $transaction = $gateway->authorize([
  *     'amount'                   => '10.00',
  *     'currency'                 => 'AUD',
- *     'prefix'                   => 'ABC' // optional
  * ]);
+ *
+ * // optional prefix assignment
+ * $transaction->setPrefix('ABC');
+ *
  * $response = $transaction->send();
  * if ($response->isSuccessful()) {
  *     echo "Authorize transaction was successful!\n";
@@ -35,16 +38,23 @@ use Omnipay\Common\Message\AbstractRequest;
  */
 class AuthorizeRequest extends AbstractRequest
 {
+    private $prefix;
+
     public function getData()
     {
         $this->validate('amount');
         return array('amount' => $this->getAmount());
     }
 
+    public function setPrefix($prefix)
+    {
+        $this->prefix = $prefix;
+    }
+
     public function sendData($data)
     {
         // generate reference
-        $data['reference'] = ($this->getTestMode() ? 'TEST:' : '') . (!empty($this->getParameter('prefix')) ? $this->getParameter('prefix') : '');
+        $data['reference'] = ($this->getTestMode() ? 'TEST:' : '') . (!empty($this->prefix) ? $this->prefix : '');
         $data['reference'] .= date('Ymd', time()) . '-' . substr((string)microtime(), 2, 6) . date('His', time())  . '-' . str_pad(rand(0, 9999), 4, 0, STR_PAD_LEFT);
 
         // always a success

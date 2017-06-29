@@ -19,7 +19,7 @@
         }
     ],
     "autoload": {
-        "psr-4": { "Omnipay\\Seymourlabs\\" : "src/" }
+        "psr-4": { "Omnipay\\Invoice\\" : "src/" }
     },
     "require": {
         "omnipay/common": "~2.0"

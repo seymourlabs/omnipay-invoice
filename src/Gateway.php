@@ -1,6 +1,6 @@
 <?php
 
-namespace Seymourlabs\Omnipay\Invoice;
+namespace Omnipay\Invoice;
 
 use Omnipay\Common\AbstractGateway;
 
@@ -27,8 +27,11 @@ use Omnipay\Common\AbstractGateway;
  * $transaction = $gateway->authorize([
  *     'amount'                   => '10.00',
  *     'currency'                 => 'AUD',
- *     'prefix'                   => 'ABC' // optional
  * ]);
+ *
+ * // optional prefix assignment
+ * $transaction->setPrefix('ABC');
+ *
  * $response = $transaction->send();
  * if ($response->isSuccessful()) {
  *     echo "Authorize transaction was successful!\n";
@@ -53,18 +56,18 @@ class Gateway extends AbstractGateway
      * Create an authorize request.
      *
      * @param array $parameters
-     * @return \Seymourlabs\Omnipay\Invoice\Message\AuthorizeRequest
+     * @return \Omnipay\Invoice\Message\AuthorizeRequest
      */
     public function authorize(array $parameters = array())
     {
-        return $this->createRequest('\Seymourlabs\Omnipay\Invoice\Message\AuthorizeRequest', $parameters);
+        return $this->createRequest('Omnipay\Invoice\Message\AuthorizeRequest', $parameters);
     }
 
     /**
      * Create a purchase request.
      *
      * @param array $parameters
-     * @return \Seymourlabs\Omnipay\Invoice\AuthorizeRequest
+     * @return \Omnipay\Invoice\AuthorizeRequest
      */
     public function purchase(array $parameters = array())
     {
